@@ -1,0 +1,7 @@
+appname = fly_jx
+httpport = 8080
+runmode = dev
+autorender = false
+copyrequestbody = true
+EnableDocs = true
+sqlconn =
