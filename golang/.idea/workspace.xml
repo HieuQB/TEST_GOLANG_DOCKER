@@ -60,15 +60,13 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
           <url>file://$PROJECT_DIR$/models/CollectDataMongo.go</url>
-          <line>91</line>
+          <line>97</line>
           <option name="timeStamp" value="6" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
-          <url>file://$PROJECT_DIR$/models/ProcessData.go</url>
-          <line>50</line>
-          <option name="timeStamp" value="9" />
-        </line-breakpoint>
       </breakpoints>
+      <default-breakpoints>
+        <breakpoint type="DlvErrorBreakpoint" />
+      </default-breakpoints>
     </breakpoint-manager>
     <watches-manager>
       <configuration name="GoApplicationRunConfiguration">

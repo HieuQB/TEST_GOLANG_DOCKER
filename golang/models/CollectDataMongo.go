@@ -11,13 +11,17 @@ import (
 )
 
 type DataFlightUnProcess struct {
+	IDFlight	string
 	Origin      interface{}
 	Destination interface{}
+	Track		interface{}
 }
 
 type DataFlight struct {
+	IDFlight 	string
 	Origin      AirPortDetail
 	Destination AirPortDetail
+	Track 		[]TrackData
 }
 
 type AirPortDetail struct {
@@ -39,7 +43,7 @@ type Region struct {
 }
 
 func ConnectMongo() *mongo.Client{
-	clientOptions := options.Client().ApplyURI("mongodb://localhost:27017")
+	clientOptions := options.Client().ApplyURI("mongodb://192.168.1.60:27017")
 	client, err := mongo.Connect(context.TODO(), clientOptions)
 	if err != nil {
 		log.Fatal(err)
@@ -58,8 +62,10 @@ func SaveDataCrawlerToMongo(client *mongo.Client, data []DataFlightUnProcess)  {
 	count := 0
 	for _ , v := range data {
 		_, err := collection.InsertOne(context.TODO(), bson.D{
+			{"idflight", v.IDFlight},
 			{"origin", v.Origin},
 			{"destination", v.Destination},
+			{"track", v.Track},
 		})
 		if err != nil {
 			fmt.Println(err.Error())
@@ -80,6 +86,28 @@ func GetAllFlyJV(client *mongo.Client)  (list []DataFlight, err error){
 	} else {
 		for cursor.Next(context.TODO()) {
 			var result DataFlight
+			err := cursor.Decode(&result)
+			if err != nil {
+				fmt.Println("cursor.Next() error:", err)
+				os.Exit(1)
+			} else {
+				list = append(list, result)
+			}
+		}
+	}
+	return
+}
+
+func GetFlyUnProcessJV(client *mongo.Client)  (list []DataFlightUnProcess, err error){
+	collection := client.Database("jx_test").Collection("JxTest")
+	cursor, err := collection.Find(context.TODO(), bson.D{})
+	// Find() method raised an error
+	if err != nil {
+		fmt.Println("Finding all documents ERROR:", err)
+		defer cursor.Close(context.TODO())
+	} else {
+		for cursor.Next(context.TODO()) {
+			var result DataFlightUnProcess
 			err := cursor.Decode(&result)
 			if err != nil {
 				fmt.Println("cursor.Next() error:", err)

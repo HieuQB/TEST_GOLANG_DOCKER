@@ -35,13 +35,17 @@ func GetFlightDetail() (data []models.DataFlightUnProcess){
 	for _, flightID := range listID {
 		dataFlight, _ := utils.CallAPI(utils.URL_FIGHT_DETAIL + "flightId=" + flightID)
 		// PARSE DATA
-		dt := dataFlight["result"]["response"]["data"].(map[string]interface{})
-		flight := dt["flight"].(map[string]interface{})
-		airport := flight["airport"].(map[string]interface{})
-		data = append(data, models.DataFlightUnProcess{
-			Origin:      airport["origin"],
-			Destination: airport["destination"],
-		})
+		if dataFlight != nil {
+			dt := dataFlight["result"]["response"]["data"].(map[string]interface{})
+			flight := dt["flight"].(map[string]interface{})
+			airport := flight["airport"].(map[string]interface{})
+			data = append(data, models.DataFlightUnProcess {
+				Origin:      airport["origin"],
+				Destination: airport["destination"],
+				Track:		 flight["track"],
+				IDFlight:	 flightID,
+			})
+		}
 	}
 	return
 }

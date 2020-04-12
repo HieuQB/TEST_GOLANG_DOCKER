@@ -12,7 +12,7 @@ type CrawlerDataController struct {
 // @router / [get]
 func (mg *CrawlerDataController) Get() {
 	client := models.ConnectMongo()
-	list, err := models.GetAllFlyJV(client)
+	list, err := models.GetFlyUnProcessJV(client)
 	models.DisconnectMongo(client)
 	if err != nil {
 		mg.Data["json"] = err.Error()

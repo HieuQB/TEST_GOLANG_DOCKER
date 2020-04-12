@@ -39,6 +39,7 @@ func CallAPI(url string)  (result map[string]map[string]map[string]interface{}, 
 func ProcessData(dataCrawler []models.DataFlight)  (res []models.Flydata){
 	for _, dtCrawler := range dataCrawler {
 		res = append(res, models.Flydata{
+			IDFlight:	   dtCrawler.IDFlight,
 			Originlat:     dtCrawler.Origin.Position.Latitude,
 			Originlong:    dtCrawler.Origin.Position.Longitude,
 			Origincity:    dtCrawler.Origin.Position.Region.City,
@@ -47,6 +48,7 @@ func ProcessData(dataCrawler []models.DataFlight)  (res []models.Flydata){
 			Deslong:       dtCrawler.Destination.Position.Longitude,
 			Descity:       dtCrawler.Destination.Position.Region.City,
 			Desairport:    dtCrawler.Destination.Name,
+			Track: 		   dtCrawler.Track,
 		})
 	}
 	return
